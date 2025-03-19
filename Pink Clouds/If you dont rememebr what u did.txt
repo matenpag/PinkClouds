@@ -1,0 +1,94 @@
+WHERE YOU LEFT OFF:
+
+#pre 8th Jan 2025
+to fix
+- your hallway2 transition to hallway1 doesn't work
+- you dont spawn in the right place out of bedroom
+- ;-;
+what happenned
+-everything
+#8th Jan 2025
+to fix/do
+- find out what doesn't let me go back to bed
+- find out the number thats i can be away from the screen so i wont be stuck
+- perhaps debug stuff
+- ;)
+
+what happened
+- i can use brackets like maths to fix hallways
+
+#9th Jan 2025
+to fix/do
+- get more rooms
+- make it able to go outside house
+- one variable for all rooms
+
+what happenned
+- fixed everythign from yesterday
+
+#14th Jan
+
+to do/fix
+- kitchen bounds
+- balcony
+- outside machanics
+
+what happened
+- kitchen
+
+#17th Jan
+to do/fix
+
+- THE TABLE IS 2 BIG#
+
+what happened
+- table
+
+#18 Jan
+
+what happened
+- table is no longer big
+
+#22 Jan -----------------------------------------------------------------------------------------------------------------------------
+to do/fix
+- make your buttons make sense
+- MAKE TRANNSITION SAY ROOMS [yes]
+- map (navigiation)
+- fix yo kitchen then ur e button [definately]
+- minigames
+- multiple endings/pathways?
+-possibly restructure 
+
+#5 Feb
+to do/fix
+- change all of the bounds
+- make side walls bigger
+- yo carpet is red blob it isn't doing anything
+- kitchen floor looks too smooth make it soft tiles
+- sepreate table from th leg
+- THE FRIDGE IS BIGBACK
+- make screen bigger for information (info panel)
+
+-SAVE YOUR THINGS
+
+
+what happened
+- redraw everything so that it is clearer
+
+#28 Feb
+to do/fix
+- most of the things from before
+- re-find all of the doors
+
+what happened
+- trying to make a door class (need to learn fully)
+
+#9 Mar
+to do/fix
+- give doorIMAGE an outline because I forgot that
+- find an easier way to interact with things (maybe a . . . for interactions that you can click)
+- make the transition screen for the rooms
+
+what happened
+- gave door a smoother fading animation
+- repositioned boundaries
