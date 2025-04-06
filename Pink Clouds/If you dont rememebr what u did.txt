@@ -9,8 +9,8 @@ what happenned
 -everything
 #8th Jan 2025
 to fix/do
-- find out what doesn't let me go back to bed
-- find out the number thats i can be away from the screen so i wont be stuck
+- find out what doesn't let me go back to bed(room)
+- find out the number thats i can be away from the screen so i wont be stuck (4px give or take 128)
 - perhaps debug stuff
 - ;)
 
@@ -92,3 +92,39 @@ to do/fix
 what happened
 - gave door a smoother fading animation
 - repositioned boundaries
+
+#13-14 Mar
+notes:
+                while whenE - start_ticks < 5000:
+                    showBlack = True #change this if you want it to pause when transitioning rooms
+
+to do/fix
+- a lot
+
+#5 Apr
+notes: forgot to record a lot of days so this is just between 14 Mar and now
+
+what happened
+- Menu button opens up a list of other buttons that will be functional in future
+- Theres is now a . . . for interactable objects
+
+WHAT TO DO IN ORDER OF PRIORITY:
+2/4/25
+*ADD THE REST OF THE ROOMS
+1Make menu button open the other buttons
+2Show bag button and make it functional
+3Place new items in the game (etc place knife on the cutting board)
+4Draw the inventory screen and integrate it in the game
+5Create tooltips for items that you can interact with the mouse
+6Be able to place items in inventory
+Create new characters for dialogue (later)
+Make minigames(later)
+
+5/4/25
+*ADD THE REST OF THE ROOMS
+1Show bag button and make it functional
+2Place new items in the game (etc place knife on the cutting board)
+3Draw the inventory screen and integrate it in the game
+4Be able to place items in inventory
+Create new characters for dialogue (later)
+Make minigames(later)

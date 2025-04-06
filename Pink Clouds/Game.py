@@ -14,6 +14,8 @@ running  = True
 pressed = False
 lastPressed = 0
 start_ticks = pygame.time.get_ticks()
+interact = ""
+interacted = ""
 LEFT_OF_PLAYER = 30 # the gap on the left of the player
 TOP_OF_PLAYER = 96 # so that theys can be against object
 #DOORS
@@ -31,8 +33,13 @@ helpscreen = pygame.image.load("Help Screen.PNG")
 helpscreen = pygame.transform.scale(helpscreen, (512,512))
 showHELP = False
 #ROOMS
-showBlack = False
 roomName = ""
+fadeRoomName = False
+roomName_opacity = 255
+roomName_font = pygame.font.Font("Lexend-SemiBold.ttf",width//8)
+roomName_display = roomName_font.render(roomName, True, (255,255,255)).convert_alpha()#NEED THIS FOR NON IMAGES
+roomName_rect = roomName_display.get_rect(center = (width//2,height//2))
+showRoomName = False
 
 bedroom = pygame.image.load("Bedroom.png")
 bedroom = pygame.transform.scale(bedroom, (512,512))
@@ -58,6 +65,53 @@ E = pygame.image.load("E.png")
 E = pygame.transform.scale(E, (64,64))
 E_rectangle = E.get_rect()
 showE = False
+
+MENU = pygame.image.load("Menu.PNG")
+MENU = pygame.transform.scale(MENU, (96,96))
+MENU_down = pygame.image.load("Menu Down.PNG")
+MENU_down = pygame.transform.scale(MENU_down, (96,96))
+MENU_rect = pygame.rect.Rect(1,1,96,28)
+MENU_down_RECT = pygame.rect.Rect(1,1,96,28)
+showMENU = False
+showMENU_down = False
+
+BAG = pygame.image.load("Bag.PNG")
+BAG = pygame.transform.scale(BAG, (96,96))
+BAG_rect = pygame.rect.Rect(1,30,96,28)
+BAG_down = pygame.image.load("Bag Down.PNG")
+BAG_down = pygame.transform.scale(BAG_down, (96,96))
+BAG_down_rect = pygame.rect.Rect(1,30,96,28)
+showBAG = False
+showBAG_down = False
+
+Help = pygame.image.load("Help.png")
+Help = pygame.transform.scale(Help, (96,96))
+Help_rect = pygame.rect.Rect(1,59, 96,28)
+Help_down = pygame.image.load("Help.PNG")
+Help_down = pygame.transform.scale(Help_down, (96,96))
+Help_down_rect = pygame.rect.Rect(1, 59,96,28)
+ShowHelp = False
+ShowHelp_down = False
+
+#misc
+diary = pygame.image.load("Diary.PNG")
+diary = pygame.transform.scale(diary, (128,128))
+diary = pygame.transform.flip(diary, True,False)
+showDiary = True
+BOOK = pygame.image.load("BOOK.PNG")
+BOOK = pygame.transform.scale(BOOK, (512,512))
+showBOOK = False
+
+#dialogue
+text_font = pygame.font.Font("PixelfySans-Regular.ttf")
+text = ""
+text_display = text_font.render(text,True,(255,255,255))
+text_rect = pygame.rect.Rect(
+
+description = pygame.Surface((504,108), pygame.SRCALPHA) #4,400 x,y
+description.fill((55,55,55,127))
+showDescription = False
+
 #TRYING OUT CLASSESS
 
 class Player(pygame.sprite.Sprite):
@@ -130,8 +184,8 @@ class Player(pygame.sprite.Sprite):
                 herex = width - 90
             if self.y < 120:#up
                herey = 120
-            if self.y > height - 128:#down
-                herey = height - 128
+            if self.y > height - 132:#down
+                herey = height - 132
         elif showHallway1:
             if self.x < -LEFT_OF_PLAYER:#left
                 herex = -LEFT_OF_PLAYER
@@ -141,8 +195,8 @@ class Player(pygame.sprite.Sprite):
                 showHallway1 = False
             if self.y < 120:
                herey = 120
-            if self.y > height - 128:
-                herey = height - 128
+            if self.y > height - 132:
+                herey = height - 132
         elif showHallway2:
             if self.x > width - 90:#right
                 herex = width - 90
@@ -152,8 +206,8 @@ class Player(pygame.sprite.Sprite):
                 showHallway2 = False
             if self.y < 120:
                herey = 120
-            if self.y > height - 128:
-                herey = height - 128
+            if self.y > height - 132:
+                herey = height - 132
             
         #bedroom bounds
         if showBedroom:
@@ -214,11 +268,13 @@ class Player(pygame.sprite.Sprite):
         elif showKitchen:
             table_rect = pygame.Rect(65 - LEFT_OF_PLAYER,325,210,170)
             chair_rect = pygame.Rect(0 - LEFT_OF_PLAYER,370,90,170)
-            counter_rect = pygame.Rect(0,0,0,0)
+            counter_rect = pygame.Rect(-200,200-TOP_OF_PLAYER,712,60)
             kitchenDoor_rect = pygame.Rect(330 + LEFT_OF_PLAYER,230,280,250)
             if table_rect.collidepoint(herex,herey + 128):
                 return
-            if chair_rect.collidepoint(herex, herey + 128):
+            elif chair_rect.collidepoint(herex, herey + 128):
+                return
+            elif counter_rect.collidepoint(herex,herey):
                 return
 
             if kitchenDoor_rect.collidepoint(herex+128, herey):
@@ -243,7 +299,6 @@ class Door():
     doorIMAGE = pygame.transform.scale(doorIMAGE, (256,256))
 
     def __init__(self):
-        super().__init__()
         self.opacity = 100
         self.fadeSpeed = 5
     def CREATEdoorPos(self):
@@ -274,7 +329,45 @@ class Door():
 
 door = Door()
 
+class Dot():
+    def __init__(self):
+        self.current = 0
+        self.animationSpeed = 0.05
+        self.frames =  []
+        self.show = False
+        self.loadFrames()
+    def loadFrames(self):
+        frameNames = ["Dot 0.png", "Dot 1.png", "Dot 2.png", "Dot 3.png",
+                  "Dot 4.png", "Dot 5.png"]
+        for frames in frameNames:
+            frame = pygame.image.load(frames)
+            frame = pygame.transform.scale(frame, (32,32))
+            self.frames.append(frame)
+    def update(self):
+        self.current += self.animationSpeed
+        if self.current > len(self.frames):
+            self.current = 0
+    def interact(self):
+        global mouse, showBedroom, showHallway1, showHallway2, showKitchen, interact
+        if showBedroom:
+            plant_rect = pygame.rect.Rect(435,430,512-436,512-431)
+            diary_rect = pygame.rect.Rect(132,150,128,128)
+            if plant_rect.collidepoint(mouse):
+                self.show = True
+                interact = "plant pot"
+            elif diary_rect.collidepoint(mouse):
+                self.show = True
+                interact = "diary"
+            else:
+                self.show = False
+                interact = ""
+        
+    def draw(self,screen,mouse):
+        if self.show:
+            current_frame = self.frames[int(self.current)]
+            screen.blit(current_frame, (mouse[0]-32,mouse[1]-24))
 
+dot = Dot()        
     
 #this is the main loop
 while running: 
@@ -286,54 +379,97 @@ while running:
             running = False
 
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and showSpace == True and now - lastPressed > 1000:
-                lastPressed = now
+            #lastPressed = now
+            if event.key == pygame.K_SPACE and showSpace == True:
                 if showthumbnail == True:
                     showthumbnail = False
                     showSpace = False
                     showHELP = True
+                    showMENU_down = False
                     player.x, player.y = 256 - 64,400 - 64
-                elif showHELP == True and not showthumbnail:
+                elif showHELP == True and not showthumbnail and now - lastPressed > 1000:
                     showSpace = False
                     showBedroom = True
                     showHELP = False
+                    showMENU = True
+                    showRoomName = True
+                if showDescription:
+                    if interacted == "plant pot":
+                        showDescription = False
+                        showSpace = False
+                        interacted = ""
+                if interacted == "diary":
+                    showBOOK = False
+                    showSpace = False
+                    interacted = ""
             elif event.key == pygame.K_e and showE == True:
                 print("E has been pressed")
-                showBlack = True
-                blackStart = pygame.time.get_ticks()
                 if bedDoor and showBedroom:
                     player.x,player.y = 360,310
+                    roomName = "HALLWAY"
+                    showRoomName = True
                     showHallway1 = True
                     showBedroom = False
                     bedDoor = False # put the room name transition code here
                 elif hallwayBed and showHallway1:
                     player.x,player.y = 360,150
+                    roomName = "BEDROOM"
+                    showRoomName = True
                     showBedroom = True
                     showHallway1 = False
                     hallwayBed = False
                 elif hallwayKitchen and showHallway2:
                     player.x,player.y = 384,300
+                    roomName = "KITCHEN"
+                    showRoomName = True
                     showKitchen = True
                     showHallway2 = False
                     hallwayKitchen = False
                 elif kitchenDoor and showKitchen:
                     player.x,player.y = 390,290
+                    roomName = "HALLWAY"
+                    showRoomName = True
                     showHallway2 = True
                     showKitchen = False
                     kitchenDoor = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print(mouse)
+            if showMENU_down:
+                MENU_rect = pygame.rect.Rect(1,1,96,116)
+                MENU_down_RECT = pygame.rect.Rect(1,1,96,28)
+                showBAG = True
+            if interact == "plant pot":
+                showDescription = True
+                showSpace = True
+                interacted = "plant pot"
+            elif interact == "diary":
+                showBOOK = True
+                interacted = "diary"
+                showSpace = True
 
-    if showBlack and blackStart is not None: #better time and None is every type of 0
-        if now - blackStart >= 5000:
-            showBlack = False
-            blackStart = None
+                                    
+    if MENU_rect.collidepoint(mouse) and not showthumbnail and not showHELP: #event.pos get position of event (mouse)
+        showMENU_down = True
+    else:
+        showMENU_down = False
+        showBAG = False
+        showBAG_down = False
+        MENU_rect = pygame.rect.Rect(1,1,96,28)
+        MENU_down_RECT = pygame.rect.Rect(1,1,96,28)
+        
+    if BAG_rect.collidepoint(mouse) and showBAG:
+        showBAG_down = True
+    else:
+        showBAG_down = False
+    #if MENU_rect.collidepoint(mouse):
+        #showMENU_down = True
+
         
     #MOOOOOOOOOOOOOVING
     #baha no move here
 
+###THIS IS FOR DISPLAY THINGS ONLYYYYYY
     #this how make buttons holdable
-    if not showBlack:        
         keys = pygame.key.get_pressed()  
         if keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]:
             player.is_moving = True
@@ -362,35 +498,65 @@ while running:
 
         if showBedroom == True:
             screen.blit(bedroom, (0,0))
+            if showDiary:
+                screen.blit(diary, (132,150))
         if showHallway1:
             screen.blit(hallway1,(0,0))
         if showHallway2:
             screen.blit(hallway2,(0,0))
         if showKitchen:
             screen.blit(kitchen, (0,0))
-            
-        #buttons
-        if showSpace:
-            screen.blit(space, space_rect)
 
-        if showE == True:
-            screen.blit(E,(0,height - 64))
-
-        #CHARACTER STUFF
+        #CHARACTER STUFF????
         if showHELP == False and showthumbnail == False:
             player.update()
-            player.draw(screen)
+            player.draw(screen) 
+        #buttons
+        if showE:
+            screen.blit(E,(0,height - 64))
+        if showDescription:
+            screen.blit(description, (4,400))
+        if showSpace:
+            screen.blit(space, space_rect)
             
         #DOOOOOOR STUFF????
         door.setOpacity(player)
         door.draw(screen)
+
+        #... STUFF????
+        dot.update()
+        dot.interact()
+        dot.draw(screen,mouse)
+    if showBOOK:
+            screen.blit(BOOK, (0,0,))
     #if i put black here will it pritn over player and door??
-    else:
-        black = pygame.Surface((512,512))
-        black.fill((0,0,0))
-        screen.blit(black,(0,0))
-        showE = False
-        showSpace = False
+
+#FADE THE ROOM NAME BROO WHY IS THIS SO LONG
+    if showRoomName:
+        roomName_opacity = 255
+        roomName_font = pygame.font.Font("Lexend-SemiBold.ttf",width//8)
+        roomName_display = roomName_font.render(roomName, True, (255,255,255)).convert_alpha()#NEED THIS FOR NON IMAGES
+        roomName_rect = roomName_display.get_rect(center = (width//2,height//2))
+        fadeRoomName = True
+        showRoomName = False
+
+    if fadeRoomName:
+        if roomName_opacity > 0:
+            roomName_opacity -= 3
+            roomName_display.set_alpha(roomName_opacity)
+        else:
+            fadeRoomName = False
+    screen.blit(roomName_display,roomName_rect)
+
+#menu buitl different
+    if showMENU:
+        screen.blit(MENU, (0,-32))
+    if showMENU_down:
+        screen.blit(MENU_down, (0,-32))
+    if showBAG:
+        screen.blit(BAG, (0,0))
+    if showBAG_down:
+        screen.blit(BAG_down, (0,0))
     #should stay at bottom
     clock.tick(60)
     pygame.display.flip()
