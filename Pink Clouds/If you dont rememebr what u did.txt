@@ -108,6 +108,28 @@ what happened
 - Menu button opens up a list of other buttons that will be functional in future
 - Theres is now a . . . for interactable objects
 
+#7th Apr
+
+what happened
+- text now shows in the description with a typewriter effect
+- diary book shows but still need to write the text in it (will do when implementing days)
+- bag now will open up a black rectangle (inventory)
+
+#15th Apr
+
+what happened
+- text does not work on multiple lines, not an improvement it just doesn't work
+
+to do/fix
+- CALL SPACE CONTINUE
+
+#19-26th Apr
+
+what happened
+- able to put things in inventory
+
+- can't interact with items in inventory
+
 WHAT TO DO IN ORDER OF PRIORITY:
 2/4/25
 *ADD THE REST OF THE ROOMS
@@ -126,5 +148,23 @@ Make minigames(later)
 2Place new items in the game (etc place knife on the cutting board)
 3Draw the inventory screen and integrate it in the game
 4Be able to place items in inventory
+Create new characters for dialogue (later)
+Make minigames(later)
+
+7/4/25
+*ADD THE REST OF THE ROOMS
+2Place new items in the game (etc place knife on the cutting board)
+3Draw the inventory screen and integrate it in the game
+4Be able to place items in inventory
+Create new characters for dialogue (later)
+Make minigames(later)
+
+26/4/35
+*ADD THE REST OF THE ROOMS
+1Interact with items
+>Make arrow go up and down to select
+>Make text be able to describe objects in inventory
+>Make a phone and a screen for it
+
 Create new characters for dialogue (later)
 Make minigames(later)
